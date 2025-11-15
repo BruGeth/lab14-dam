@@ -16,22 +16,29 @@ Notificacions.setNotificationHandler({
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Ingresa el titulo de tu recordatorio</Text>
-      <TextInput 
-      style={styles.input} 
-      placeholder="Titulo"
-      />
+      <Text style={styles.header}>Ingresa el título de tu recordatorio</Text>
 
-      <Text style={styles.label}>Tiempo en segundos: </Text>
-      <TextInput 
-      style={styles.input} 
-      placeholder="Segundos (ej. 10)" 
-      keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
-      />
+      <View style={styles.card}>
+        <Text style={styles.label}>Título</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Título"
+          placeholderTextColor="#7a7a7a"
+        />
+
+        <Text style={[styles.label, { marginTop: 12 }]}>Tiempo en segundos</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Segundos (ej. 10)"
+          placeholderTextColor="#7a7a7a"
+          keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
+        />
+      </View>
 
       <View style={styles.buttonContainer}>
-        <Button 
-        title="Crear Recordatorio"
+        <Button
+          title="Crear Recordatorio"
+          color={Platform.OS === 'ios' ? '#007AFF' : '#3b82f6'}
         />
       </View>
     </View>
@@ -41,8 +48,56 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f3f6fb',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1f2937',
+    marginBottom: 18,
+    alignSelf: 'center',
+  },
+  card: {
+    width: '100%',
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  label: {
+    alignSelf: 'flex-start',
+    marginLeft: 6,
+    marginBottom: 6,
+    color: '#374151',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  input: {
+    width: '100%',
+    borderColor: '#e5e7eb',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    backgroundColor: '#fafafa',
+    color: '#111827',
+  },
+  buttonContainer: {
+    marginTop: 18,
+    width: '60%',
+    borderRadius: 8,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
 });
