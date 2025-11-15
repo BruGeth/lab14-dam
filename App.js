@@ -4,6 +4,7 @@ import * as Device from 'expo-device';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert, Platform ,StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
+//Configurar el manejo de notificaciones  
 Notificacions.setNotificationHandler({
   handleNotification: async () => ({
     // shouldShowAlert: true -> deprecated
@@ -15,28 +16,51 @@ Notificacions.setNotificationHandler({
   }),
 });
 
-useEffect(() => {
-  registerForNotifications();
-}, []);
-
-//Solicitar permisos para notificaciones
-async function registerForNotifications() {
-  if (!Device.isDevice) {
-    Alert.alert('Nota', 'Las notificaciones locales funcionan mejor en un dispositivo físico.');
-    return;
-  }
-  const { status: existing } = await Notifications.getPermissionsAsync();
-  let finalStatus = existing;
-  if (existing !== 'granted') {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-  }
-  if (finalStatus !== 'granted') {
-    Alert.alert('Permiso denegado', 'Activa notificaciones para usar recordatorios.');
-  }
-}
+const STORAGE_KEY = '@reminders';
 
 export default function App() {
+  const [reminders, setReminders] = useState([]);
+
+  useEffect(() => {
+    registerForNotifications();
+  }, []);
+
+  //Solicitar permisos para notificaciones
+  async function registerForNotifications() {
+    if (!Device.isDevice) {
+      Alert.alert('Nota', 'Las notificaciones locales funcionan mejor en un dispositivo físico.');
+      return;
+    }
+    const { status: existing } = await Notifications.getPermissionsAsync();
+    let finalStatus = existing;
+    if (existing !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      Alert.alert('Permiso denegado', 'Activa notificaciones para usar recordatorios.');
+    }
+  }
+
+  async function saveReminders(list) {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    } catch (e) {
+      console.error('Error saving reminders', e);
+    }
+  }
+
+  async function loadReminders() {
+    try {
+      const json = await AsyncStorage.getItem(STORAGE_KEY);
+      const list = json ? JSON.parse(json) : [];
+      setReminders(list);
+    } catch (e) {
+      console.error('Error loading reminders', e);
+    }
+  }
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Ingresa el título de tu recordatorio</Text>
