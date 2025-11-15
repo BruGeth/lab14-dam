@@ -84,12 +84,17 @@ export default function App() {
     }
 
     try {
+      // Crear una fecha absoluta para que la notificación ocurra después de `secs` segundos
+      const triggerDate = new Date(Date.now() + secs * 1000);
+
       const scheduledId = await Notifications.scheduleNotificationAsync({
         content: {
-          title: title,
+          title: title.trim(),
           body: `Recordatorio en ${secs} segundos.`,
+          sound: true,
         },
-        trigger: { seconds: secs },
+        // Usar fecha absoluta en lugar de { seconds: secs }
+        trigger: triggerDate,
       });
 
       const newReminder = {
