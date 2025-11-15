@@ -15,6 +15,23 @@ Notificacions.setNotificationHandler({
   }),
 });
 
+//Solicitar permisos para notificaciones
+async function registerForNotifications() {
+  if (!Device.isDevice) {
+    Alert.alert('Nota', 'Las notificaciones locales funcionan mejor en un dispositivo físico.');
+    return;
+  }
+  const { status: existing } = await Notifications.getPermissionsAsync();
+  let finalStatus = existing;
+  if (existing !== 'granted') {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  if (finalStatus !== 'granted') {
+    Alert.alert('Permiso denegado', 'Activa notificaciones para usar recordatorios.');
+  }
+}
+
 export default function App() {
   return (
     <View style={styles.container}>
