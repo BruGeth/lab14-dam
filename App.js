@@ -19,10 +19,13 @@ Notificacions.setNotificationHandler({
 const STORAGE_KEY = '@reminders';
 
 export default function App() {
+  const [title, setTitle] = useState('');
+  const [seconds, setSeconds] = useState('');
   const [reminders, setReminders] = useState([]);
 
   useEffect(() => {
     registerForNotifications();
+    loadReminders();
   }, []);
 
   //Solicitar permisos para notificaciones
@@ -60,6 +63,37 @@ export default function App() {
     }
   }
 
+async function scheduleNotification() {
+  const secs = Number(seconds);
+  if (!title.trim()) return Alert.alert('Error', 'Ingresa un título.');
+  if (!secs || secs <= 0) return Alert.alert('Error', 'Ingresa segundos válidos.');
+
+  try {
+    const scheduledId = await Notifications.scheduleNotificationAsync({
+      content: { title: title.trim(), body: `Recordatorio en ${secs} segundos.` },
+      trigger: { seconds: secs },
+    });
+
+    const newReminder = {
+      id: Date.now().toString(),
+      title: title.trim(),
+      seconds: secs,
+      scheduledId,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updated = [newReminder, ...reminders];
+    setReminders(updated);
+    await saveReminders(updated);
+
+    setTitle('');
+    setSeconds('');
+    Alert.alert('Listo', `Programado en ${secs} s`);
+  } catch (e) {
+    console.error(e);
+    Alert.alert('Error', 'No se pudo programar.');
+  }
+}
 
   return (
     <View style={styles.container}>
