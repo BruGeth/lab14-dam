@@ -1,5 +1,6 @@
 import * as Notificacions from 'expo-notifications';
 import * as Device from 'expo-device';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert, Platform ,StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 Notificacions.setNotificationHandler({
