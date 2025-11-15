@@ -15,6 +15,10 @@ Notificacions.setNotificationHandler({
   }),
 });
 
+useEffect(() => {
+  registerForNotifications();
+}, []);
+
 //Solicitar permisos para notificaciones
 async function registerForNotifications() {
   if (!Device.isDevice) {
