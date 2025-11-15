@@ -2,7 +2,17 @@ import { useEffect, useState } from 'react';
 import * as Notificacions from 'expo-notifications';
 import * as Device from 'expo-device';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert, Platform ,StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import {
+  Alert,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 
 //Configurar el manejo de notificaciones  
 Notificacions.setNotificationHandler({
@@ -120,8 +130,28 @@ async function scheduleNotification() {
         <Button
           title="Crear Recordatorio"
           color={Platform.OS === 'ios' ? '#007AFF' : '#3b82f6'}
+          onPress={scheduleNotification}
         />
       </View>
+
+      <Text style={styles.listHeader}>Recordatorios</Text>
+
+      <FlatList
+        data={reminders}
+        keyExtractor={i => i.id}
+        renderItem={({ item }) => (
+          <View style={styles.reminderItem}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.reminderTitle}>{item.title}</Text>
+              <Text style={styles.reminderMeta}>{item.seconds}s • {new Date(item.createdAt).toLocaleString()}</Text>
+            </View>
+            <TouchableOpacity style={styles.deleteButton} onPress={() => removeReminder(item)}>
+              <Text style={styles.deleteButtonText}>Eliminar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        ListEmptyComponent={<Text style={styles.emptyText}>No hay recordatorios.</Text>}
+      />
     </View>
   );
 }
