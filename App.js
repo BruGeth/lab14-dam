@@ -1,8 +1,6 @@
 import * as Notificacions from 'expo-notifications';
 import * as Device from 'expo-device';
-import { Alert } from 'react-native';
-
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform ,StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 Notificacions.setNotificationHandler({
   handleNotification: async () => ({
@@ -18,7 +16,24 @@ Notificacions.setNotificationHandler({
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text style={styles.label}>Ingresa el titulo de tu recordatorio</Text>
+      <TextInput 
+      style={styles.input} 
+      placeholder="Titulo"
+      />
+
+      <Text style={styles.label}>Tiempo en segundos: </Text>
+      <TextInput 
+      style={styles.input} 
+      placeholder="Segundos (ej. 10)" 
+      keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
+      />
+
+      <View style={styles.buttonContainer}>
+        <Button 
+        title="Crear Recordatorio"
+        />
+      </View>
     </View>
   );
 }
