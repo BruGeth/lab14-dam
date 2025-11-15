@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#eef2ff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     paddingHorizontal: 20,
     paddingTop: 48,
   },
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.06,
@@ -283,6 +284,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#0f172a',
     marginBottom: 4,
+    marginRight: 8,
+    flexShrink: 1,
   },
   reminderMeta: {
     fontSize: 12,
